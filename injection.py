@@ -50,15 +50,18 @@ def try_arm(arm_timeout=10):
     health = 0 #0 unknown, -1 bad, 1 good
     while True and time.time() < arm_threshold:
         master.arducopter_arm()
-        time.sleep(0.5)
+        master.wait_heartbeat()
         if master.motors_armed():
+            print('a')
             return True
+        time.sleep(0.5)
     return False
 
-def safe_arm(pre_timeout=15, post_timeout=10):
+def safe_arm(pre_timeout=25, post_timeout=10):
     health = prearm_health(pre_timeout)
     if health == 1:
         try_arm(post_timeout)
+
     
 
 # def read_loop():
